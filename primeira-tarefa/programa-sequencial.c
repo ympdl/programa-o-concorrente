@@ -1,55 +1,54 @@
-/*
-Yasmim Mirella Paiva de Lima - 123428202
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main(int argc, char *argv[]) {
-    //declaracao das variaveis
-    long int N = atol(argv[1]);
-    char *nomeArquivo = argv[2];
-
-    //defesa para a entrada do programa
-    if (argc < 3) {
-        printf("ERROR: %s <N> <arquivo_saida>\n", argv[0]); //informar valor de N e nome do arquivo que preciso preencher 
-        return 1;
-    }
-    
-    //inicializacao dos vetores
-    float *vetor_A = (float*) malloc(N * sizeof(float));
-    float *vetor_B = (float*) malloc(N * sizeof(float));
-
-    //inserindo valores aleatorios nos vetores
-    for (long int i = 0; i < N; i++) {
-        vetor_A[i] = (float)rand() / RAND_MAX; 
-        vetor_B[i] = (float)rand() / RAND_MAX;
-    }
-
-    // Calcula produto interno sequencial
-    double resultado = 0.0;
-    for (long int i = 0; i < N; i++) {
-        resultado += vetor_A[i] * vetor_B[i];
-    }
-
-    // Escreve no arquivo binário
-    FILE *arquivo = fopen(nomeArquivo, "wb");
-    if (!arquivo) {
-        perror("Erro ao abrir arquivo"); //defesa de arquivo
+    if (argc != 3) {
+        printf("Uso: %s <N> <arquivo_saida>\n", argv[0]);
         return 1;
     }
 
-    fwrite(&N, sizeof(long int), 1, arquivo); // valor de N
-    fwrite(vetor_A, sizeof(float), N, arquivo); //vetor A
-    fwrite(vetor_B, sizeof(float), N, arquivo); //vetor B
-    fwrite(&resultado, sizeof(float), 1, arquivo); //resultado produto interno
+    long N = atol(argv[1]);   // dimensão dos vetores
+    char *filename = argv[2]; // arquivo binário de saída
 
-    fclose(arquivo);
+    float *a = malloc(N * sizeof(float));
+    float *b = malloc(N * sizeof(float));
 
-    printf("Arquivo %s gerado com sucesso.\n", nomeArquivo);
+    if (!a || !b) {
+        printf("Erro de alocação de memória\n");
+        return 1;
+    }
 
-    free(vetor_A);
-    free(vetor_B);
+    srand(time(NULL));
 
+    // Preenche vetores com números aleatórios
+    for (long i = 0; i < N; i++) {
+        a[i] = (float)(rand() % 100) / 10.0; // [0, 10)
+        b[i] = (float)(rand() % 100) / 10.0;
+    }
+
+    // Calcula produto interno (sequencial)
+    double produto = 0.0;
+    for (long i = 0; i < N; i++) {
+        produto += a[i] * b[i];
+    }
+
+    // Salva em arquivo binário: N, vetores e resultado
+    FILE *f = fopen(filename, "wb");
+    if (!f) {
+        printf("Erro ao abrir arquivo de saída\n");
+        return 1;
+    }
+
+    fwrite(&N, sizeof(long), 1, f);
+    fwrite(a, sizeof(float), N, f);
+    fwrite(b, sizeof(float), N, f);
+    fwrite(&produto, sizeof(double), 1, f);
+
+    fclose(f);
+    free(a);
+    free(b);
+
+    printf("Arquivo %s gerado com N=%ld, produto interno=%.4f\n", filename, N, produto);
     return 0;
 }
