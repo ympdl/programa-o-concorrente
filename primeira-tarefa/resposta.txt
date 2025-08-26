@@ -1,0 +1,68 @@
+﻿Entrada: N = 10.000, 4 Threads
+Resultado concorrente: 2461.350828
+Resultado sequencial: 2461.350828
+Erro relativo: 0.000000e+00
+Tempo de execução: 0.004072 segundos
+
+
+Entrada: N = 10.000, 2 Threads
+Resultado concorrente: 2461.350828
+Resultado sequencial: 2461.350828
+Erro relativo: 0.000000e+00
+Tempo de execução: 0.002673 segundos
+
+
+Entrada: N = 10.000, 6 Threads
+Resultado concorrente: 2461.350828
+Resultado sequencial: 2461.350828
+Erro relativo: 0.000000e+00
+Tempo de execução: 0.003096 segundos
+
+
+Entrada: N = 100.000, 6 Threads
+Resultado concorrente: 25001.770600
+Resultado sequencial: 25001.770600
+Erro relativo: -1.455088e-16
+Tempo de execução: 0.006655 segundos
+
+
+Entrada: N = 100.000, 4 Threads
+Resultado concorrente: 25001.770600
+Resultado sequencial: 25001.770600
+Erro relativo: -1.455088e-16
+Tempo de execução: 0.006518 segundos
+
+
+Entrada: N = 100.000, 2 Threads
+Resultado concorrente: 25001.770600
+Resultado sequencial: 25001.770600
+Erro relativo: -1.455088e-16
+Tempo de execução: 0.006552 segundos
+
+
+Entrada: N = 10.000.000, 4 Threads
+Resultado concorrente: 2500484.296944
+Resultado sequencial: 2500484.296944
+Erro relativo: -4.283254e-15
+Tempo de execução: 0.365164 segundos
+
+
+Entrada: N = 10.000.000, 10 Threads
+Resultado concorrente: 2500484.296944
+Resultado sequencial: 2500484.296944
+Erro relativo: -4.469483e-15
+Tempo de execução: 0.332697 segundos
+
+
+Entrada: N = 100.000.000, 10 Threads
+Resultado concorrente: 25000639.952414
+Resultado sequencial: 25000639.952414
+Erro relativo: 9.834515e-15
+Tempo de execução: 3.787344 segundos
+
+
+Entrada: N = 100.000.000, 4 Threads
+Resultado concorrente: 25000639.952414
+Resultado sequencial: 25000639.952414
+Erro relativo: 3.471882e-14
+Tempo de execução: 3.538043 segundos
