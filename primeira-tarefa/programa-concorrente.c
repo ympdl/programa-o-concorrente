@@ -1,88 +1,138 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <sys/time.h>
+#include "timer.h"   // Biblioteca usada para medir tempo de execução
 
+// Estrutura que guarda os dados que cada thread precisa para trabalhar
 typedef struct {
-    long start, end;
-    float *a, *b;
-    double partial_sum;
-} ThreadData;
+    int id;              // Identificador da thread
+    long int N;          // Dimensão (tamanho) dos vetores
+    int num_threads;     // Número total de threads
+    float *vetorA;       // Ponteiro para o vetor A
+    float *vetorB;       // Ponteiro para o vetor B
+    double resultado_parcial; // Cada thread guarda aqui o resultado parcial
+} t_dados;
 
-void *thread_func(void *arg) {
-    ThreadData *data = (ThreadData*) arg;
-    double soma = 0.0;
-    for (long i = data->start; i < data->end; i++) {
-        soma += data->a[i] * data->b[i];
+// Função que cada thread vai executar para calcular sua parte do produto interno
+void* calcula_produto(void *arg) {
+    t_dados *dados = (t_dados*) arg; // Cast para acessar os dados da thread
+
+    // Calcula qual é o intervalo de elementos que esta thread vai processar
+    long int inicio = dados->id * (dados->N / dados->num_threads);
+    long int fim = (dados->id == dados->num_threads - 1) ? dados->N : inicio + (dados->N / dados->num_threads);
+
+    // Variável local para acumular a soma parcial
+    double soma_local = 0.0;
+
+    // Faz a multiplicação elemento a elemento e acumula a soma
+    for (long int i = inicio; i < fim; i++) {
+        soma_local += dados->vetorA[i] * dados->vetorB[i];
     }
-    data->partial_sum = soma;
-    return NULL;
-}
 
-double get_time() {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec + tv.tv_usec / 1000000.0;
+    // Guarda o resultado parcial dentro da estrutura da thread
+    dados->resultado_parcial = soma_local;
+
+    pthread_exit(NULL); // Finaliza a thread
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        printf("Uso: %s <num_threads> <arquivo_entrada>\n", argv[0]);
+    // Variáveis para medir o tempo
+    double inicio_tempo, fim_tempo, tempo_execucao;
+    GET_TIME(inicio_tempo);
+
+    // Verifica se o usuário passou corretamente os argumentos
+    if (argc < 3) {
+        fprintf(stderr, "Uso correto: %s <num_threads> <arquivo.bin>\n", argv[0]);
         return 1;
     }
 
-    int T = atoi(argv[1]);
-    char *filename = argv[2];
+    // Recupera o número de threads e o nome do arquivo de entrada
+    int num_threads = atoi(argv[1]);
+    char *nome_arquivo = argv[2];
 
-    FILE *f = fopen(filename, "rb");
-    if (!f) {
-        printf("Erro ao abrir arquivo\n");
-        return 1;
+    // Abre o arquivo binário para leitura
+    FILE *arq = fopen(nome_arquivo, "rb");
+    if (!arq) {
+        fprintf(stderr, "Erro: não foi possível abrir o arquivo %s\n", nome_arquivo);
+        return 2;
     }
 
-    long N;
-    fread(&N, sizeof(long), 1, f);
+    // Lê a dimensão dos vetores (N) do arquivo
+    long int N;
+    fread(&N, sizeof(long int), 1, arq);
 
-    float *a = malloc(N * sizeof(float));
-    float *b = malloc(N * sizeof(float));
-
-    fread(a, sizeof(float), N, f);
-    fread(b, sizeof(float), N, f);
-
-    double resultado_seq;
-    fread(&resultado_seq, sizeof(double), 1, f);
-
-    fclose(f);
-
-    pthread_t threads[T];
-    ThreadData dados[T];
-
-    long chunk = N / T;
-    double start_time = get_time();
-
-    for (int i = 0; i < T; i++) {
-        dados[i].a = a;
-        dados[i].b = b;
-        dados[i].start = i * chunk;
-        dados[i].end = (i == T-1) ? N : (i+1)*chunk;
-        pthread_create(&threads[i], NULL, thread_func, &dados[i]);
+    if (N <= 0) {
+        fprintf(stderr, "Erro: N inválido no arquivo.\n");
+        fclose(arq);
+        return 3;
     }
 
-    double resultado_conc = 0.0;
-    for (int i = 0; i < T; i++) {
+    // Aloca memória para os vetores
+    float *vetorA = (float*) malloc(N * sizeof(float));
+    float *vetorB = (float*) malloc(N * sizeof(float));
+    if (!vetorA || !vetorB) {
+        fprintf(stderr, "Erro: não foi possível alocar memória para os vetores.\n");
+        fclose(arq);
+        return 4;
+    }
+
+    // Lê os vetores A e B do arquivo
+    fread(vetorA, sizeof(float), N, arq);
+    fread(vetorB, sizeof(float), N, arq);
+
+    // Lê também o resultado sequencial (já calculado e salvo no arquivo)
+    double resultado_sequencial;
+    fread(&resultado_sequencial, sizeof(double), 1, arq);
+
+    // Fecha o arquivo (já não precisamos mais dele)
+    fclose(arq);
+
+    // Vetores de threads e de estruturas com os dados para cada thread
+    pthread_t threads[num_threads];
+    t_dados dados[num_threads];
+
+    // Criação das threads
+    for (int i = 0; i < num_threads; i++) {
+        dados[i].id = i;
+        dados[i].N = N;
+        dados[i].num_threads = num_threads;
+        dados[i].vetorA = vetorA;
+        dados[i].vetorB = vetorB;
+        dados[i].resultado_parcial = 0.0;
+
+        if (pthread_create(&threads[i], NULL, calcula_produto, (void*) &dados[i]) != 0) {
+            fprintf(stderr, "Erro: falha na criação da thread %d.\n", i);
+            free(vetorA);
+            free(vetorB);
+            return 5;
+        }
+    }
+
+    // Espera todas as threads terminarem e acumula o resultado final
+    double resultado_concorrente = 0.0;
+    for (int i = 0; i < num_threads; i++) {
         pthread_join(threads[i], NULL);
-        resultado_conc += dados[i].partial_sum;
+        resultado_concorrente += dados[i].resultado_parcial;
     }
 
-    double end_time = get_time();
-    double erro_rel = (resultado_seq - resultado_conc) / resultado_seq;
+    // Exibe os resultados
+    printf("Resultado concorrente: %.6f\n", resultado_concorrente);
+    printf("Resultado sequencial: %.6f\n", resultado_sequencial);
 
-    printf("Resultado sequencial: %.4f\n", resultado_seq);
-    printf("Resultado concorrente: %.4f\n", resultado_conc);
-    printf("Erro relativo: %.8f\n", erro_rel);
-    printf("Tempo de execução: %.6f segundos\n", end_time - start_time);
+    // Calcula o erro relativo entre o concorrente e o sequencial
+    double erro_relativo = (resultado_sequencial - resultado_concorrente) / resultado_sequencial;
+    printf("Erro relativo: %.6e\n", erro_relativo);
 
-    free(a);
-    free(b);
+    // Mede o tempo final e calcula o tempo de execução
+    GET_TIME(fim_tempo);
+    tempo_execucao = fim_tempo - inicio_tempo;
+
+    printf("\nTempo de execução: %.6f segundos\n", tempo_execucao);
+    printf("\n---------------------- FIM ----------------------\n");
+
+    // Libera a memória usada
+    free(vetorA);
+    free(vetorB);
+
     return 0;
 }
