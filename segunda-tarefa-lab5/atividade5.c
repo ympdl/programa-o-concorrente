@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-// Mutex e variável de condição
+// Mutex e variáveis de condição
 pthread_mutex_t mutex;
-pthread_cond_t cond;
+pthread_cond_t cond_soma;
+pthread_cond_t cond_impressao;
 
 // Variáveis compartilhadas
 long int soma = 0;
@@ -18,19 +19,19 @@ void *fazSoma(void *args) {
     for (int i = 0; i < 100000; i++) {
         pthread_mutex_lock(&mutex); // Entrando na seção crítica
 
-        while(impresso){
-            puts("Tem alguém esperando antes.");
-            pthread_cond_wait(&cond, &mutex);
+        // Espera até que a soma não tenha sido impressa
+        while (impresso) {
+            pthread_cond_wait(&cond_impressao, &mutex);
         }
 
         soma++;
         if (soma % 1000 == 0) { // Se for múltiplo de 1000
             impresso = 1; // Libero para imprimir
-            pthread_cond_signal(&cond); // acorda a thread extra, já que deixo ela dormindo enquanto não chegar um múltiplo
+            pthread_cond_signal(&cond_soma); // Acorda a thread extra para imprimir
 
-            // espera até que o valor seja impresso
-            while (impresso) { // Assim que imprimo ele reseta para 0, ent ele só fica com 1 de novo quando acho um múltiplo
-                pthread_cond_wait(&cond, &mutex); // Precisa ficar bloqueada até imprimir para poder continuar interando
+            // Espera até que a thread extra tenha impresso
+            while (impresso) { // Quando for impresso, reseta para 0
+                pthread_cond_wait(&cond_impressao, &mutex); // Aguardar até a thread extra terminar de imprimir
             }
         }
 
@@ -46,21 +47,21 @@ void *extra(void *args) {
     long int nthreads = (long int) args;
 
     while (1) { 
-        pthread_mutex_lock(&mutex); // Entro na seção crítica
+        pthread_mutex_lock(&mutex); // Entra na seção crítica
 
-        // espera até ter múltiplo de 1000 não impresso
-        while ((soma < (nthreads * 100000)) && !impresso) { // Enquanto ainda não alcancei o limite e ainda n ta liberado imprimir
-            pthread_cond_wait(&cond, &mutex); // Ela precisa esperar vir o múltiplo para ser desbloqueada. Isso que faz eu ter q dar signal na soma
+        // Espera até que a soma tenha alcançado um múltiplo de 1000 não impresso
+        while ((soma < (nthreads * 100000)) && !impresso) { 
+            pthread_cond_wait(&cond_soma, &mutex); // Espera até que o múltiplo de 1000 esteja disponível para ser impresso
         }
         
-        // imprime o múltiplo de 1000
-        if(impresso){
+        // Imprime o múltiplo de 1000
+        if (impresso) {
             printf("soma = %ld\n", soma);
             impresso = 0; // Foi impresso, precisa da liberação de novo
-            pthread_cond_broadcast(&cond); // Libero
+            pthread_cond_broadcast(&cond_impressao); // Libera as threads de soma para continuar
         }
         
-        if (soma >= (nthreads * 100000)) { // Condição de saída. Já interei no limite, então preciso sair.
+        if (soma >= (nthreads * 100000)) { // Condição de saída: já atingiu o limite
             pthread_mutex_unlock(&mutex);
             break;
         }
@@ -80,9 +81,10 @@ int main(int argc, char *argv[]) {
     }
     nthreads = atoi(argv[1]);
 
-    // inicializa mutex e cond
+    // Inicializa mutex e condições
     pthread_mutex_init(&mutex, NULL);
-    pthread_cond_init(&cond, NULL);
+    pthread_cond_init(&cond_soma, NULL);
+    pthread_cond_init(&cond_impressao, NULL);
 
     tid_sistema = (pthread_t *) malloc(sizeof(pthread_t) * (nthreads + 1));
     if (tid_sistema == NULL) {
@@ -90,7 +92,7 @@ int main(int argc, char *argv[]) {
         return 2;
     }
 
-    // cria threads de soma
+    // Cria threads de soma
     for (int i = 0; i < nthreads; i++) {
         if (pthread_create(&tid_sistema[i], NULL, fazSoma, (void *)(long)i)) {
             puts("ERRO: pthread_create()");
@@ -98,19 +100,21 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    // cria thread extra
+    // Cria thread extra
     if (pthread_create(&tid_sistema[nthreads], NULL, extra, (void *)(long)nthreads)) {
         puts("ERRO: pthread_create() extra");
         return 4;
     }
 
-    // espera todas terminarem
+    // Espera todas terminarem
     for (int i = 0; i < nthreads + 1; i++) {
         pthread_join(tid_sistema[i], NULL);
     }
 
+    // Destrói mutex e condições
     pthread_mutex_destroy(&mutex);
-    pthread_cond_destroy(&cond);
+    pthread_cond_destroy(&cond_soma);
+    pthread_cond_destroy(&cond_impressao);
     free(tid_sistema);
 
     printf("Valor final de soma = %ld\n", soma);
