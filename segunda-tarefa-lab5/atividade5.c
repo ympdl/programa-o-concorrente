@@ -8,7 +8,7 @@ pthread_cond_t cond;
 
 // Variáveis compartilhadas
 long int soma = 0;
-int impresso = 1; // 0 = não impresso, 1 = já impresso
+int impresso = 0; // 0 = não impresso, 1 = já impresso
 
 // Thread que faz a soma
 void *fazSoma(void *args) {
@@ -18,13 +18,18 @@ void *fazSoma(void *args) {
     for (int i = 0; i < 100000; i++) {
         pthread_mutex_lock(&mutex); // Entrando na seção crítica
 
+        while(impresso){
+            puts("Tem alguém esperando antes.");
+            pthread_cond_wait(&cond, &mutex);
+        }
+
         soma++;
         if (soma % 1000 == 0) { // Se for múltiplo de 1000
-            impresso = 0; //Reseto para 0 porque ele ainda não foi imprimido se ele acaboud e ser calculado
+            impresso = 1; // Libero para imprimir
             pthread_cond_signal(&cond); // acorda a thread extra, já que deixo ela dormindo enquanto não chegar um múltiplo
 
             // espera até que o valor seja impresso
-            while (impresso == 0) {
+            while (impresso) { // Assim que imprimo ele reseta para 0, ent ele só fica com 1 de novo quando acho um múltiplo
                 pthread_cond_wait(&cond, &mutex); // Precisa ficar bloqueada até imprimir para poder continuar interando
             }
         }
@@ -44,22 +49,25 @@ void *extra(void *args) {
         pthread_mutex_lock(&mutex); // Entro na seção crítica
 
         // espera até ter múltiplo de 1000 não impresso
-        while (!(soma % 1000 == 0 && impresso == 0)) { // Enquanto ainda não chega um múltiplo de 1000 e ele não foi impresso pode acontecer duas coisas:
-            if (soma >= nthreads * 100000) { // Condição de saída. Já interei no limite, então preciso sair.
-                pthread_mutex_unlock(&mutex);
-                pthread_exit(NULL);
-            }
-            pthread_cond_wait(&cond, &mutex); //Ou ela precisa esperar vir o múltiplo para ser desbloqueada. Isso que faz eu ter q dar signal na soma
+        while ((soma < (nthreads * 100000)) && !impresso) { // Enquanto ainda não alcancei o limite e ainda n ta liberado imprimir
+            pthread_cond_wait(&cond, &mutex); // Ela precisa esperar vir o múltiplo para ser desbloqueada. Isso que faz eu ter q dar signal na soma
         }
-
+        
         // imprime o múltiplo de 1000
-        printf("soma = %ld\n", soma);
-
-        impresso = 1; // Imprimi
-        pthread_cond_signal(&cond); // acorda uma thread de soma
+        if(impresso){
+            printf("soma = %ld\n", soma);
+            impresso = 0; // Foi impresso, precisa da liberação de novo
+            pthread_cond_broadcast(&cond); // Libero
+        }
+        
+        if (soma >= (nthreads * 100000)) { // Condição de saída. Já interei no limite, então preciso sair.
+            pthread_mutex_unlock(&mutex);
+            break;
+        }
 
         pthread_mutex_unlock(&mutex);
     }
+    pthread_exit(NULL);
 }
 
 int main(int argc, char *argv[]) {
