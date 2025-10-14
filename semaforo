@@ -1,0 +1,226 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <math.h>
+
+// Estrutura para o buffer compartilhado
+typedef struct {
+    int *buffer;
+    int tamanho;
+    int contador;
+    int numeros_restantes;
+    int proximo_consumo;  // Próxima posição a ser consumida
+} Buffer;
+
+// Estrutura para as threads consumidoras
+typedef struct {
+    int id;
+    int primos_encontrados;
+    Buffer *buffer_compartilhado;
+} Consumidor;
+
+// Variáveis globais
+Buffer buffer_compartilhado;
+Consumidor *consumidores;
+int N, M, num_consumidores;
+int total_primos = 0;
+int producao_concluida = 0;
+
+// Semáforos reduzidos
+sem_t sem_buffer_vazio;    // Controla produção (buffer vazio)
+sem_t sem_buffer_cheio;    // Controla consumo (elementos disponíveis)
+sem_t sem_mutex_global;    // Único mutex para todas as seções críticas
+
+// Função para verificar se um número é primo
+int ehPrimo(long long int n) {
+    int i;
+    if (n <= 1) return 0;
+    if (n == 2) return 1;
+    if (n % 2 == 0) return 0;
+    for (i = 3; i < sqrt(n) + 1; i += 2)
+        if (n % i == 0) return 0;
+    return 1;
+}
+
+// Thread produtora
+void* produtor(void *arg) {
+    int numero_atual = 1;
+    
+    while (numero_atual <= N) {
+        // Espera buffer ficar vazio
+        sem_wait(&sem_buffer_vazio);
+        
+        // Seção crítica - preenche buffer
+        sem_wait(&sem_mutex_global);
+        
+        printf("Produtor: Preenchendo buffer com %d números começando de %d\n", 
+               M, numero_atual);
+        
+        // Preenche buffer
+        buffer_compartilhado.contador = 0;
+        for (int i = 0; i < M && numero_atual <= N; i++) {
+            buffer_compartilhado.buffer[i] = numero_atual++;
+            buffer_compartilhado.contador++;
+        }
+        
+        buffer_compartilhado.numeros_restantes = buffer_compartilhado.contador;
+        buffer_compartilhado.proximo_consumo = 0;  // Reinicia posição de consumo
+        
+        printf("Produtor: Buffer preenchido com %d números\n", buffer_compartilhado.contador);
+        
+        sem_post(&sem_mutex_global);
+        
+        // Sinaliza que há elementos para consumir
+        for (int i = 0; i < buffer_compartilhado.contador; i++) {
+            sem_post(&sem_buffer_cheio);
+        }
+    }
+    
+    producao_concluida = 1;
+    // Sinaliza todas as threads consumidoras para evitar deadlock
+    for (int i = 0; i < num_consumidores; i++) {
+        sem_post(&sem_buffer_cheio);
+    }
+    
+    printf("Produtor: Produção concluída!\n");
+    pthread_exit(NULL);
+}
+
+// Thread consumidora
+void* consumidor(void *arg) {
+    Consumidor *cons = (Consumidor*) arg;
+    int numero, posicao;
+    
+    printf("Consumidor %d: Iniciado\n", cons->id);
+    
+    while (1) {
+        // Espera por elemento disponível
+        sem_wait(&sem_buffer_cheio);
+        
+        sem_wait(&sem_mutex_global);
+        
+        // Verifica se deve terminar
+        if (producao_concluida && buffer_compartilhado.numeros_restantes <= 0) {
+            sem_post(&sem_mutex_global);
+            break;
+        }
+        
+        // Pega próximo número do buffer
+        if (buffer_compartilhado.numeros_restantes > 0) {
+            posicao = buffer_compartilhado.proximo_consumo;
+            numero = buffer_compartilhado.buffer[posicao];
+            buffer_compartilhado.buffer[posicao] = -1;  // Marca como consumido
+            buffer_compartilhado.numeros_restantes--;
+            buffer_compartilhado.proximo_consumo++;  // Avança para próxima posição
+            
+            sem_post(&sem_mutex_global);
+            
+            // Verifica primalidade (fora da seção crítica)
+            if (ehPrimo(numero)) {
+                sem_wait(&sem_mutex_global);
+                cons->primos_encontrados++;
+                total_primos++;
+                int primos_atuais = cons->primos_encontrados;
+                sem_post(&sem_mutex_global);
+                
+                printf("Consumidor %d: %d é PRIMO! (Total desta thread: %d)\n", 
+                       cons->id, numero, primos_atuais);
+            } else {
+                printf("Consumidor %d: %d não é primo\n", cons->id, numero);
+            }
+            
+            // Verifica se buffer foi totalmente consumido
+            sem_wait(&sem_mutex_global);
+            if (buffer_compartilhado.numeros_restantes == 0) {
+                sem_post(&sem_buffer_vazio);
+            }
+            sem_post(&sem_mutex_global);
+            
+        } else {
+            sem_post(&sem_mutex_global);
+        }
+    }
+    
+    printf("Consumidor %d: Finalizado com %d primos encontrados\n", 
+           cons->id, cons->primos_encontrados);
+    pthread_exit(NULL);
+}
+
+int main() {
+    pthread_t thread_produtor, *threads_consumidores;
+    
+    // Leitura dos parâmetros
+    printf("Digite o valor de N (quantidade de números): ");
+    scanf("%d", &N);
+    
+    printf("Digite o valor de M (tamanho do buffer): ");
+    scanf("%d", &M);
+    
+    printf("Digite o número de threads consumidoras: ");
+    scanf("%d", &num_consumidores);
+    
+    // Inicialização do buffer
+    buffer_compartilhado.buffer = (int*)malloc(M * sizeof(int));
+    buffer_compartilhado.tamanho = M;
+    buffer_compartilhado.contador = 0;
+    buffer_compartilhado.numeros_restantes = 0;
+    buffer_compartilhado.proximo_consumo = 0;
+    
+    // Inicialização dos consumidores
+    consumidores = (Consumidor*)malloc(num_consumidores * sizeof(Consumidor));
+    for (int i = 0; i < num_consumidores; i++) {
+        consumidores[i].id = i + 1;
+        consumidores[i].primos_encontrados = 0;
+        consumidores[i].buffer_compartilhado = &buffer_compartilhado;
+    }
+    
+    // Inicialização dos semáforos (apenas 3 agora)
+    sem_init(&sem_buffer_vazio, 0, 1);   // Buffer começa vazio
+    sem_init(&sem_buffer_cheio, 0, 0);   // Nenhum elemento inicialmente
+    sem_init(&sem_mutex_global, 0, 1);   // Mutex único
+    
+    // Criação das threads
+    threads_consumidores = (pthread_t*)malloc(num_consumidores * sizeof(pthread_t));
+    
+    pthread_create(&thread_produtor, NULL, produtor, NULL);
+    
+    for (int i = 0; i < num_consumidores; i++) {
+        pthread_create(&threads_consumidores[i], NULL, consumidor, &consumidores[i]);
+    }
+    
+    // Aguarda término das threads
+    pthread_join(thread_produtor, NULL);
+    
+    for (int i = 0; i < num_consumidores; i++) {
+        pthread_join(threads_consumidores[i], NULL);
+    }
+    
+    // Resultados finais
+    printf("\n=== RESULTADOS FINAIS ===\n");
+    printf("Total de números primos encontrados: %d\n", total_primos);
+    
+    int max_primos = -1;
+    int vencedora = -1;
+    for (int i = 0; i < num_consumidores; i++) {
+        printf("Consumidor %d: %d primos\n", consumidores[i].id, consumidores[i].primos_encontrados);
+        if (consumidores[i].primos_encontrados > max_primos) {
+            max_primos = consumidores[i].primos_encontrados;
+            vencedora = consumidores[i].id;
+        }
+    }
+    
+    printf("\nTHREAD VENCEDORA: Consumidor %d com %d primos encontrados!\n", 
+           vencedora, max_primos);
+    
+    // Liberação de recursos
+    free(buffer_compartilhado.buffer);
+    free(consumidores);
+    free(threads_consumidores);
+    
+    sem_destroy(&sem_buffer_vazio);
+    sem_destroy(&sem_buffer_cheio);
+    sem_destroy(&sem_mutex_global);
+    
+    return 0;
+}
