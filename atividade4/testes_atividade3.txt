@@ -9,6 +9,10 @@ N = 20000
 Quantidade de números primos entre 1 e 20000: 2262
 N = 50000
 Quantidade de números primos entre 1 e 50000: 5133
+N = 100000
+Quantidade de números primos entre 1 e 100000: 9592
+N = 1000000
+Quantidade de números primos entre 1 e 1000000: 78498
 
 --- Testando com 2 threads ---
 N = 1000
@@ -21,6 +25,10 @@ N = 20000
 Quantidade de números primos entre 1 e 20000: 2262
 N = 50000
 Quantidade de números primos entre 1 e 50000: 5133
+N = 100000
+Quantidade de números primos entre 1 e 100000: 9592
+N = 1000000
+Quantidade de números primos entre 1 e 1000000: 78498
 
 --- Testando com 4 threads ---
 N = 1000
@@ -33,6 +41,10 @@ N = 20000
 Quantidade de números primos entre 1 e 20000: 2262
 N = 50000
 Quantidade de números primos entre 1 e 50000: 5133
+N = 100000
+Quantidade de números primos entre 1 e 100000: 9592
+N = 1000000
+Quantidade de números primos entre 1 e 1000000: 78498
 
 --- Testando com 8 threads ---
 N = 1000
@@ -45,6 +57,10 @@ N = 20000
 Quantidade de números primos entre 1 e 20000: 2262
 N = 50000
 Quantidade de números primos entre 1 e 50000: 5133
+N = 100000
+Quantidade de números primos entre 1 e 100000: 9592
+N = 1000000
+Quantidade de números primos entre 1 e 1000000: 78498
 
 --- Testando com 16 threads ---
 N = 1000
@@ -57,3 +73,7 @@ N = 20000
 Quantidade de números primos entre 1 e 20000: 2262
 N = 50000
 Quantidade de números primos entre 1 e 50000: 5133
+N = 100000
+Quantidade de números primos entre 1 e 100000: 9592
+N = 1000000
+Quantidade de números primos entre 1 e 1000000: 78498
