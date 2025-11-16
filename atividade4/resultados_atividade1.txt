@@ -1,0 +1,900 @@
+-----------------------------------------
+Testando com 1 threads
+-----------------------------------------
+N = 10
+1 NÃO é primo
+2 é primo
+3 é primo
+4 NÃO é primo
+5 é primo
+6 NÃO é primo
+7 é primo
+8 NÃO é primo
+9 NÃO é primo
+10 NÃO é primo
+
+Resultado paralelizado: 4
+Resultado sequencial: 4
+CORRETO ✔
+Terminou
+
+N = 25
+1 NÃO é primo
+2 é primo
+3 é primo
+4 NÃO é primo
+5 é primo
+6 NÃO é primo
+7 é primo
+8 NÃO é primo
+9 NÃO é primo
+10 NÃO é primo
+11 é primo
+12 NÃO é primo
+13 é primo
+14 NÃO é primo
+15 NÃO é primo
+16 NÃO é primo
+17 é primo
+18 NÃO é primo
+19 é primo
+20 NÃO é primo
+21 NÃO é primo
+22 NÃO é primo
+23 é primo
+24 NÃO é primo
+25 NÃO é primo
+
+Resultado paralelizado: 9
+Resultado sequencial: 9
+CORRETO ✔
+Terminou
+
+N = 100
+1 NÃO é primo
+2 é primo
+3 é primo
+4 NÃO é primo
+5 é primo
+6 NÃO é primo
+7 é primo
+8 NÃO é primo
+9 NÃO é primo
+10 NÃO é primo
+11 é primo
+12 NÃO é primo
+13 é primo
+14 NÃO é primo
+15 NÃO é primo
+16 NÃO é primo
+17 é primo
+18 NÃO é primo
+19 é primo
+20 NÃO é primo
+21 NÃO é primo
+22 NÃO é primo
+23 é primo
+24 NÃO é primo
+25 NÃO é primo
+26 NÃO é primo
+27 NÃO é primo
+28 NÃO é primo
+29 é primo
+30 NÃO é primo
+31 é primo
+32 NÃO é primo
+33 NÃO é primo
+34 NÃO é primo
+35 NÃO é primo
+36 NÃO é primo
+37 é primo
+38 NÃO é primo
+39 NÃO é primo
+40 NÃO é primo
+41 é primo
+42 NÃO é primo
+43 é primo
+44 NÃO é primo
+45 NÃO é primo
+46 NÃO é primo
+47 é primo
+48 NÃO é primo
+49 NÃO é primo
+50 NÃO é primo
+51 NÃO é primo
+52 NÃO é primo
+53 é primo
+54 NÃO é primo
+55 NÃO é primo
+56 NÃO é primo
+57 NÃO é primo
+58 NÃO é primo
+59 é primo
+60 NÃO é primo
+61 é primo
+62 NÃO é primo
+63 NÃO é primo
+64 NÃO é primo
+65 NÃO é primo
+66 NÃO é primo
+67 é primo
+68 NÃO é primo
+69 NÃO é primo
+70 NÃO é primo
+71 é primo
+72 NÃO é primo
+73 é primo
+74 NÃO é primo
+75 NÃO é primo
+76 NÃO é primo
+77 NÃO é primo
+78 NÃO é primo
+79 é primo
+80 NÃO é primo
+81 NÃO é primo
+82 NÃO é primo
+83 é primo
+84 NÃO é primo
+85 NÃO é primo
+86 NÃO é primo
+87 NÃO é primo
+88 NÃO é primo
+89 é primo
+90 NÃO é primo
+91 NÃO é primo
+92 NÃO é primo
+93 NÃO é primo
+94 NÃO é primo
+95 NÃO é primo
+96 NÃO é primo
+97 é primo
+98 NÃO é primo
+99 NÃO é primo
+100 NÃO é primo
+
+Resultado paralelizado: 25
+Resultado sequencial: 25
+CORRETO ✔
+Terminou
+
+-----------------------------------------
+Testando com 2 threads
+-----------------------------------------
+N = 10
+2 é primo
+3 é primo
+4 NÃO é primo
+5 é primo
+6 NÃO é primo
+7 é primo
+1 NÃO é primo
+9 NÃO é primo
+10 NÃO é primo
+8 NÃO é primo
+
+Resultado paralelizado: 4
+Resultado sequencial: 4
+CORRETO ✔
+Terminou
+
+N = 25
+1 NÃO é primo
+2 é primo
+4 NÃO é primo
+5 é primo
+6 NÃO é primo
+7 é primo
+8 NÃO é primo
+3 é primo
+9 NÃO é primo
+11 é primo
+12 NÃO é primo
+13 é primo
+14 NÃO é primo
+15 NÃO é primo
+16 NÃO é primo
+10 NÃO é primo
+17 é primo
+19 é primo
+20 NÃO é primo
+21 NÃO é primo
+22 NÃO é primo
+23 é primo
+24 NÃO é primo
+25 NÃO é primo
+18 NÃO é primo
+
+Resultado paralelizado: 9
+Resultado sequencial: 9
+CORRETO ✔
+Terminou
+
+N = 100
+1 NÃO é primo
+2 é primo
+3 é primo
+5 é primo
+6 NÃO é primo
+7 é primo
+8 NÃO é primo
+9 NÃO é primo
+4 NÃO é primo
+10 NÃO é primo
+11 é primo
+13 é primo
+14 NÃO é primo
+15 NÃO é primo
+16 NÃO é primo
+17 é primo
+18 NÃO é primo
+19 é primo
+20 NÃO é primo
+21 NÃO é primo
+12 NÃO é primo
+23 é primo
+22 NÃO é primo
+24 NÃO é primo
+26 NÃO é primo
+27 NÃO é primo
+28 NÃO é primo
+29 é primo
+25 NÃO é primo
+30 NÃO é primo
+32 NÃO é primo
+33 NÃO é primo
+34 NÃO é primo
+35 NÃO é primo
+36 NÃO é primo
+37 é primo
+38 NÃO é primo
+39 NÃO é primo
+40 NÃO é primo
+41 é primo
+42 NÃO é primo
+43 é primo
+44 NÃO é primo
+45 NÃO é primo
+46 NÃO é primo
+47 é primo
+48 NÃO é primo
+49 NÃO é primo
+50 NÃO é primo
+51 NÃO é primo
+52 NÃO é primo
+53 é primo
+54 NÃO é primo
+55 NÃO é primo
+56 NÃO é primo
+57 NÃO é primo
+58 NÃO é primo
+59 é primo
+31 é primo
+61 é primo
+60 NÃO é primo
+62 NÃO é primo
+63 NÃO é primo
+65 NÃO é primo
+66 NÃO é primo
+64 NÃO é primo
+67 é primo
+69 NÃO é primo
+70 NÃO é primo
+71 é primo
+72 NÃO é primo
+73 é primo
+74 NÃO é primo
+75 NÃO é primo
+76 NÃO é primo
+77 NÃO é primo
+78 NÃO é primo
+79 é primo
+80 NÃO é primo
+81 NÃO é primo
+82 NÃO é primo
+83 é primo
+68 NÃO é primo
+84 NÃO é primo
+85 NÃO é primo
+87 NÃO é primo
+88 NÃO é primo
+89 é primo
+90 NÃO é primo
+91 NÃO é primo
+92 NÃO é primo
+93 NÃO é primo
+94 NÃO é primo
+95 NÃO é primo
+96 NÃO é primo
+97 é primo
+98 NÃO é primo
+99 NÃO é primo
+100 NÃO é primo
+86 NÃO é primo
+
+Resultado paralelizado: 25
+Resultado sequencial: 25
+CORRETO ✔
+Terminou
+
+-----------------------------------------
+Testando com 4 threads
+-----------------------------------------
+N = 10
+1 NÃO é primo
+5 é primo
+6 NÃO é primo
+7 é primo
+8 NÃO é primo
+9 NÃO é primo
+4 NÃO é primo
+2 é primo
+3 é primo
+10 NÃO é primo
+
+Resultado paralelizado: 4
+Resultado sequencial: 4
+CORRETO ✔
+Terminou
+
+N = 25
+4 NÃO é primo
+5 é primo
+6 NÃO é primo
+7 é primo
+8 NÃO é primo
+9 NÃO é primo
+10 NÃO é primo
+11 é primo
+12 NÃO é primo
+3 é primo
+14 NÃO é primo
+15 NÃO é primo
+16 NÃO é primo
+17 é primo
+18 NÃO é primo
+1 NÃO é primo
+2 é primo
+21 NÃO é primo
+22 NÃO é primo
+13 é primo
+24 NÃO é primo
+25 NÃO é primo
+19 é primo
+20 NÃO é primo
+23 é primo
+
+Resultado paralelizado: 9
+Resultado sequencial: 9
+CORRETO ✔
+Terminou
+
+N = 100
+1 NÃO é primo
+5 é primo
+6 NÃO é primo
+7 é primo
+8 NÃO é primo
+9 NÃO é primo
+10 NÃO é primo
+11 é primo
+12 NÃO é primo
+13 é primo
+14 NÃO é primo
+15 NÃO é primo
+16 NÃO é primo
+17 é primo
+18 NÃO é primo
+19 é primo
+3 é primo
+21 NÃO é primo
+22 NÃO é primo
+23 é primo
+24 NÃO é primo
+25 NÃO é primo
+26 NÃO é primo
+27 NÃO é primo
+28 NÃO é primo
+29 é primo
+30 NÃO é primo
+31 é primo
+32 NÃO é primo
+33 NÃO é primo
+34 NÃO é primo
+35 NÃO é primo
+4 NÃO é primo
+37 é primo
+38 NÃO é primo
+39 NÃO é primo
+40 NÃO é primo
+41 é primo
+42 NÃO é primo
+43 é primo
+44 NÃO é primo
+2 é primo
+20 NÃO é primo
+36 NÃO é primo
+48 NÃO é primo
+49 NÃO é primo
+50 NÃO é primo
+51 NÃO é primo
+52 NÃO é primo
+53 é primo
+54 NÃO é primo
+55 NÃO é primo
+45 NÃO é primo
+56 NÃO é primo
+57 NÃO é primo
+46 NÃO é primo
+47 é primo
+61 é primo
+58 NÃO é primo
+63 NÃO é primo
+64 NÃO é primo
+65 NÃO é primo
+66 NÃO é primo
+67 é primo
+68 NÃO é primo
+69 NÃO é primo
+59 é primo
+71 é primo
+72 NÃO é primo
+73 é primo
+60 NÃO é primo
+75 NÃO é primo
+76 NÃO é primo
+77 NÃO é primo
+78 NÃO é primo
+79 é primo
+62 NÃO é primo
+81 NÃO é primo
+82 NÃO é primo
+83 é primo
+84 NÃO é primo
+85 NÃO é primo
+86 NÃO é primo
+87 NÃO é primo
+88 NÃO é primo
+89 é primo
+90 NÃO é primo
+70 NÃO é primo
+74 NÃO é primo
+93 NÃO é primo
+94 NÃO é primo
+95 NÃO é primo
+96 NÃO é primo
+97 é primo
+98 NÃO é primo
+99 NÃO é primo
+100 NÃO é primo
+80 NÃO é primo
+91 NÃO é primo
+92 NÃO é primo
+
+Resultado paralelizado: 25
+Resultado sequencial: 25
+CORRETO ✔
+Terminou
+
+-----------------------------------------
+Testando com 8 threads
+-----------------------------------------
+N = 10
+3 é primo
+9 NÃO é primo
+10 NÃO é primo
+7 é primo
+1 NÃO é primo
+6 NÃO é primo
+8 NÃO é primo
+4 NÃO é primo
+2 é primo
+5 é primo
+
+Resultado paralelizado: 4
+Resultado sequencial: 4
+CORRETO ✔
+Terminou
+
+N = 25
+6 NÃO é primo
+9 NÃO é primo
+10 NÃO é primo
+11 é primo
+12 NÃO é primo
+13 é primo
+14 NÃO é primo
+15 NÃO é primo
+16 NÃO é primo
+3 é primo
+2 é primo
+19 é primo
+20 NÃO é primo
+21 NÃO é primo
+22 NÃO é primo
+23 é primo
+24 NÃO é primo
+25 NÃO é primo
+8 NÃO é primo
+1 NÃO é primo
+4 NÃO é primo
+7 é primo
+5 é primo
+17 é primo
+18 NÃO é primo
+
+Resultado paralelizado: 9
+Resultado sequencial: 9
+CORRETO ✔
+Terminou
+
+N = 100
+4 NÃO é primo
+9 NÃO é primo
+10 NÃO é primo
+11 é primo
+6 NÃO é primo
+8 NÃO é primo
+3 é primo
+15 NÃO é primo
+16 NÃO é primo
+17 é primo
+18 NÃO é primo
+19 é primo
+20 NÃO é primo
+1 NÃO é primo
+2 é primo
+23 é primo
+24 NÃO é primo
+7 é primo
+26 NÃO é primo
+27 NÃO é primo
+28 NÃO é primo
+29 é primo
+30 NÃO é primo
+31 é primo
+32 NÃO é primo
+33 NÃO é primo
+34 NÃO é primo
+35 NÃO é primo
+36 NÃO é primo
+37 é primo
+5 é primo
+39 NÃO é primo
+40 NÃO é primo
+41 é primo
+42 NÃO é primo
+12 NÃO é primo
+13 é primo
+45 NÃO é primo
+46 NÃO é primo
+47 é primo
+48 NÃO é primo
+14 NÃO é primo
+21 NÃO é primo
+51 NÃO é primo
+52 NÃO é primo
+22 NÃO é primo
+54 NÃO é primo
+55 NÃO é primo
+56 NÃO é primo
+57 NÃO é primo
+58 NÃO é primo
+25 NÃO é primo
+38 NÃO é primo
+43 é primo
+44 NÃO é primo
+60 NÃO é primo
+62 NÃO é primo
+49 NÃO é primo
+66 NÃO é primo
+50 NÃO é primo
+68 NÃO é primo
+69 NÃO é primo
+53 é primo
+59 é primo
+72 NÃO é primo
+73 é primo
+61 é primo
+64 NÃO é primo
+76 NÃO é primo
+77 NÃO é primo
+78 NÃO é primo
+79 é primo
+80 NÃO é primo
+81 NÃO é primo
+82 NÃO é primo
+83 é primo
+63 NÃO é primo
+85 NÃO é primo
+86 NÃO é primo
+87 NÃO é primo
+88 NÃO é primo
+89 é primo
+90 NÃO é primo
+91 NÃO é primo
+92 NÃO é primo
+93 NÃO é primo
+94 NÃO é primo
+95 NÃO é primo
+96 NÃO é primo
+97 é primo
+98 NÃO é primo
+99 NÃO é primo
+65 NÃO é primo
+67 é primo
+70 NÃO é primo
+71 é primo
+74 NÃO é primo
+75 NÃO é primo
+84 NÃO é primo
+100 NÃO é primo
+
+Resultado paralelizado: 25
+Resultado sequencial: 25
+CORRETO ✔
+Terminou
+
+-----------------------------------------
+Testando com 16 threads
+-----------------------------------------
+N = 10
+9 NÃO é primo
+7 é primo
+4 NÃO é primo
+10 NÃO é primo
+1 NÃO é primo
+5 é primo
+2 é primo
+8 NÃO é primo
+6 NÃO é primo
+3 é primo
+
+Resultado paralelizado: 4
+Resultado sequencial: 4
+CORRETO ✔
+Terminou
+
+N = 25
+5 é primo
+13 é primo
+10 NÃO é primo
+19 é primo
+20 NÃO é primo
+21 NÃO é primo
+22 NÃO é primo
+23 é primo
+24 NÃO é primo
+3 é primo
+6 NÃO é primo
+16 NÃO é primo
+1 NÃO é primo
+4 NÃO é primo
+8 NÃO é primo
+12 NÃO é primo
+15 NÃO é primo
+11 é primo
+2 é primo
+17 é primo
+9 NÃO é primo
+14 NÃO é primo
+18 NÃO é primo
+7 é primo
+25 NÃO é primo
+
+Resultado paralelizado: 9
+Resultado sequencial: 9
+CORRETO ✔
+Terminou
+
+N = 100
+1 NÃO é primo
+17 é primo
+14 NÃO é primo
+19 é primo
+13 é primo
+21 NÃO é primo
+22 NÃO é primo
+23 é primo
+24 NÃO é primo
+6 NÃO é primo
+26 NÃO é primo
+4 NÃO é primo
+28 NÃO é primo
+29 é primo
+30 NÃO é primo
+31 é primo
+32 NÃO é primo
+33 NÃO é primo
+34 NÃO é primo
+12 NÃO é primo
+36 NÃO é primo
+37 é primo
+38 NÃO é primo
+39 NÃO é primo
+40 NÃO é primo
+11 é primo
+42 NÃO é primo
+43 é primo
+44 NÃO é primo
+45 NÃO é primo
+46 NÃO é primo
+47 é primo
+7 é primo
+49 NÃO é primo
+50 NÃO é primo
+8 NÃO é primo
+52 NÃO é primo
+53 é primo
+54 NÃO é primo
+55 NÃO é primo
+5 é primo
+57 NÃO é primo
+58 NÃO é primo
+59 é primo
+60 NÃO é primo
+61 é primo
+62 NÃO é primo
+63 NÃO é primo
+64 NÃO é primo
+65 NÃO é primo
+2 é primo
+67 é primo
+68 NÃO é primo
+69 NÃO é primo
+70 NÃO é primo
+71 é primo
+72 NÃO é primo
+73 é primo
+74 NÃO é primo
+75 NÃO é primo
+76 NÃO é primo
+77 NÃO é primo
+78 NÃO é primo
+79 é primo
+80 NÃO é primo
+15 NÃO é primo
+10 NÃO é primo
+83 é primo
+84 NÃO é primo
+85 NÃO é primo
+86 NÃO é primo
+87 NÃO é primo
+88 NÃO é primo
+89 é primo
+16 NÃO é primo
+91 NÃO é primo
+92 NÃO é primo
+9 NÃO é primo
+94 NÃO é primo
+18 NÃO é primo
+3 é primo
+97 é primo
+98 NÃO é primo
+99 NÃO é primo
+20 NÃO é primo
+25 NÃO é primo
+27 NÃO é primo
+35 NÃO é primo
+41 é primo
+48 NÃO é primo
+51 NÃO é primo
+56 NÃO é primo
+66 NÃO é primo
+81 NÃO é primo
+82 NÃO é primo
+90 NÃO é primo
+93 NÃO é primo
+95 NÃO é primo
+96 NÃO é primo
+100 NÃO é primo
+
+Resultado paralelizado: 25
+Resultado sequencial: 25
+CORRETO ✔
+
+Os valores testados a seguir, por serem muito grandes, não era possível printar todos os valores que são primos e não são porque não cabia no meu terminal e não dava para copiar.
+
+-----------------------------------------
+Testando com 1 threads
+-----------------------------------------
+N = 1000
+Resultado paralelizado: 168
+Resultado sequencial: 168
+CORRETO ✔
+Terminou
+
+N = 5000
+Resultado paralelizado: 669
+Resultado sequencial: 669
+CORRETO ✔
+Terminou
+
+N = 10000
+Resultado paralelizado: 1229
+Resultado sequencial: 1229
+CORRETO ✔
+Terminou
+
+-----------------------------------------
+Testando com 2 threads
+-----------------------------------------
+N = 1000
+Resultado paralelizado: 168
+Resultado sequencial: 168
+CORRETO ✔
+Terminou
+
+N = 5000
+Resultado paralelizado: 669
+Resultado sequencial: 669
+CORRETO ✔
+Terminou
+
+N = 10000
+Resultado paralelizado: 1229
+Resultado sequencial: 1229
+CORRETO ✔
+Terminou
+
+-----------------------------------------
+Testando com 4 threads
+-----------------------------------------
+N = 1000
+Resultado paralelizado: 168
+Resultado sequencial: 168
+CORRETO ✔
+Terminou
+
+N = 5000
+Resultado paralelizado: 669
+Resultado sequencial: 669
+CORRETO ✔
+Terminou
+
+N = 10000
+Resultado paralelizado: 1229
+Resultado sequencial: 1229
+CORRETO ✔
+Terminou
+
+-----------------------------------------
+Testando com 8 threads
+-----------------------------------------
+N = 1000
+Resultado paralelizado: 168
+Resultado sequencial: 168
+CORRETO ✔
+Terminou
+
+N = 5000
+Resultado paralelizado: 669
+Resultado sequencial: 669
+CORRETO ✔
+Terminou
+
+N = 10000
+Resultado paralelizado: 1229
+Resultado sequencial: 1229
+CORRETO ✔
+Terminou
+
+-----------------------------------------
+Testando com 16 threads
+-----------------------------------------
+N = 1000
+Resultado paralelizado: 168
+Resultado sequencial: 168
+CORRETO ✔
+Terminou
+
+N = 5000
+Resultado paralelizado: 669
+Resultado sequencial: 669
+CORRETO ✔
+Terminou
+
+N = 10000
+Resultado paralelizado: 1229
+Resultado sequencial: 1229
+CORRETO ✔
+Terminou
