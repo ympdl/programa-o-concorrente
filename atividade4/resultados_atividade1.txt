@@ -815,6 +815,18 @@ Resultado sequencial: 1229
 CORRETO ✔
 Terminou
 
+N = 100000
+Resultado paralelizado: 9592
+Resultado sequencial: 9592
+CORRETO ✔
+Terminou
+
+N = 1000000
+Resultado paralelizado: 78498
+Resultado sequencial: 78498
+CORRETO ✔
+Terminou
+
 -----------------------------------------
 Testando com 2 threads
 -----------------------------------------
@@ -833,6 +845,18 @@ Terminou
 N = 10000
 Resultado paralelizado: 1229
 Resultado sequencial: 1229
+CORRETO ✔
+Terminou
+
+N = 100000
+Resultado paralelizado: 9592
+Resultado sequencial: 9592
+CORRETO ✔
+Terminou
+
+N = 1000000
+Resultado paralelizado: 78498
+Resultado sequencial: 78498
 CORRETO ✔
 Terminou
 
@@ -857,6 +881,18 @@ Resultado sequencial: 1229
 CORRETO ✔
 Terminou
 
+N = 100000
+Resultado paralelizado: 9592
+Resultado sequencial: 9592
+CORRETO ✔
+Terminou
+
+N = 1000000
+Resultado paralelizado: 78498
+Resultado sequencial: 78498
+CORRETO ✔
+Terminou
+
 -----------------------------------------
 Testando com 8 threads
 -----------------------------------------
@@ -875,6 +911,18 @@ Terminou
 N = 10000
 Resultado paralelizado: 1229
 Resultado sequencial: 1229
+CORRETO ✔
+Terminou
+
+N = 100000
+Resultado paralelizado: 9592
+Resultado sequencial: 9592
+CORRETO ✔
+Terminou
+
+N = 1000000
+Resultado paralelizado: 78498
+Resultado sequencial: 78498
 CORRETO ✔
 Terminou
 
@@ -898,3 +946,14 @@ Resultado paralelizado: 1229
 Resultado sequencial: 1229
 CORRETO ✔
 Terminou
+
+N = 100000
+Resultado paralelizado: 9592
+Resultado sequencial: 9592
+CORRETO ✔
+Terminou
+
+N = 1000000
+Resultado paralelizado: 78498
+Resultado sequencial: 78498
+CORRETO ✔
